@@ -30,6 +30,9 @@ function scissors()
 
 function playGame(userChoice, computerChoice)
 {
+    // Todo - Figure out how to make these global so I'm not constantly redeclaring them... 
+    // Todo - (Cont'd.) I already tried but it's not working, oddly
+    
     // Used to output whatever the result was, basic DOM manipulation 
     let generalOutput = document.getElementById("gameOutput");
     let winsOutput = document.getElementById("wins");
