@@ -1,0 +1,108 @@
+*
+{
+    padding: 0;
+    margin: 0;
+
+    box-sizing: border-box;
+}
+
+/* Generic styling to raw html elements */
+nav
+{
+    width: 100%;
+
+    /* Because all the child content is floated, this makes it so the navbar has size */
+    overflow: auto;
+
+    /* For testing */
+    background-color: rgb(250, 250, 250);
+    border-bottom: 1px solid rgb(220, 220, 220);
+    padding: 10px;
+}
+
+/* The search bar itself - There's only one so it can be referred to generically */
+form > input 
+{
+    padding: 10px;
+    min-width: 600px;
+    margin: 20px 0;
+}
+
+/* Layout */
+nav > img 
+{
+    float: left;
+    margin-top: 25px;
+}
+
+/* The middle part of the navbar */
+#searchBarContainer
+{
+    float: left;
+    padding-left: 15px;
+}
+
+#navbarRight
+{
+    float: right;
+}
+
+#navbarRight:last-child
+{
+    margin-right: 18px;
+}
+
+/* Selects the categories themselves (the list elements) */
+#categoriesContainer > ul > li, #navbarRight > li
+{
+    margin: 0 5px;
+    display: inline-block;
+    vertical-align: center;
+}
+
+#categoriesLeft
+{
+    float: left;
+}
+
+#categoriesRight
+{
+    float: right;
+}
+
+#resultsContainer
+{
+    float: left;
+    overflow: auto;
+
+    margin-left: 184px;    
+    padding: 20px;
+}
+
+.searchResult
+{
+    margin: 20px 0;
+}
+
+/* Specifics like font styling and stuff like that */
+.searchResultTitle
+{
+    font-size: 22px;
+    text-decoration: none;
+}
+
+.searchResultLink
+{
+    font-size: 14px;
+    color: green;
+}
+
+.searchResultDate
+{
+    color: grey;
+}
+
+
+
+
+
