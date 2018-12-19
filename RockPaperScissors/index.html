@@ -13,18 +13,20 @@
 
   <body>
 
+    <script src="rps.js"></script>
+
     <!-- Text so the user knows what's up -->
     <p id="gameOutput">Welcome to RPS! Use the buttons below to play.</p>
 
-    <span>Wins: </span><span id="wins"></span>
-    <span>Losses: </span><span id="losses"></span>
+    <span>Wins: </span><span id="wins"></span><span> | </span>
+    <span>Losses: </span><span id="losses"></span> <br>     
 
-    <button id="rockButton">Rock</button>
-    <button id="paperButton">Paper</button>
-    <button id="scissorsButton">Scissors</button>
+    <button id="rockButton" onclick="rock()">Rock</button>
+    <button id="paperButton" onclick="paper()">Paper</button>
+    <button id="scissorsButton" onclick="scissors()">Scissors</button>
 
     <!-- Handles all the rps behavior -->
-    <script src="rps.js"></script>
+    
     
   </body>
 
