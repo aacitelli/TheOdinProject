@@ -1,0 +1,93 @@
+*
+{
+    margin: 0;
+    padding: 0;
+}
+
+body
+{
+    background-color: rgb(235, 235, 235);
+}
+
+/* Horizontal lists */
+#navbar > ul > li, #footer > ul > li, #buttonsContainer > ul > li 
+{
+    display: inline-block;
+    line-height: 50px;
+
+    box-sizing: border-box;
+    margin: 0 10px;
+}
+
+#navbar > ul, #footer > ul
+{
+    display: inline;
+}
+
+#navbar, #footer
+{
+    position: fixed;
+    min-width: 100%;
+    min-height: 50px;
+}
+
+#navbar
+{
+    top: 0;
+}
+
+#footer
+{
+    bottom: 0;
+    background: rgb(215, 215, 215);
+}
+
+#navbarLeft, #footerLeft
+{
+    float: left;
+}
+
+#navbarLeft:first-child, #footerLeft:first-child
+{
+    margin-left: 10px;
+}
+
+#navbarRight:last-child, #footerRight:last-child
+{
+    margin-right: 10px;
+}
+
+#navbarRight, #footerRight
+{
+    float: right;
+}
+
+/* Middle of the screen */
+#middleContainer
+{
+    position: absolute; 
+    left: calc(50% - 202px);
+    top: 20vh;
+
+    text-align: center;
+}
+
+/* Google Search and I'm Feeling Lucky Buttons */
+#buttonsContainer > ul > li
+{
+    background-color: rgb(220,220,220);
+
+    padding: 8px;
+    border: 1px solid rgb(200, 200, 200);
+
+    margin-top: 20px;
+}
+
+/* The input box */
+#middleContainer > form > input 
+{
+    padding: 10px;
+    min-width: 500px;
+    border: 1px solid rgb(200, 200, 200);
+    box-shadow: 1px 2px rgb(128, 128, 128);
+}
