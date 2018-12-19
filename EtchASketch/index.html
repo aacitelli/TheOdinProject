@@ -11,22 +11,22 @@
 
   </head>
 
+  <!-- Really just a base for all the canvas stuff, nothing special -->
   <body>
 
-    <script src="rps.js"></script>
+    <div id="contentContainer">
 
-    <!-- Text so the user knows what's up -->
-    <p id="gameOutput">Welcome to RPS! Use the buttons below to play.</p>
+        <h1>Etch A Sketch</h1>
+        <p>Hover your cursor over the boxes to draw!</p>
 
-    <span>Wins: </span><span id="wins"></span><span> | </span>
-    <span>Losses: </span><span id="losses"></span> <br>     
+        <!-- Inside this is where all the magic happens -->
+        <div id="canvas"></div>
 
-    <button id="rockButton" onclick="rock()">Rock</button>
-    <button id="paperButton" onclick="paper()">Paper</button>
-    <button id="scissorsButton" onclick="scissors()">Scissors</button>
-
-    <!-- Handles all the rps behavior -->
+    </div>
     
+
+    <!-- Run after the canvas and stuff is generated -->
+    <script src="rps.js"></script>
     
   </body>
 
