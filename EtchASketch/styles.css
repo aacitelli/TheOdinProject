@@ -25,12 +25,26 @@ body
 
 #canvas
 {
-    width: 400px;
-    height: 400px;
+    /* The extra two pixels are to account for the border... 
+        this is kinda a quirk of using border-box */
+    width: 402px;
+    height: 402px;
 
     border: 1px black solid;
 
     margin: 0 auto;
 }
 
+.gridBox
+{
 
+    float: left;
+    width: 20px;
+    height: 20px;
+
+    /* Don't need to worry about this making it > 20px b/c I'm 
+        using box-sizing: border-box */
+    border: 1px black solid;
+
+    
+}
