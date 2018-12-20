@@ -29,9 +29,23 @@ function initializeGrid()
 
             // Assigning a class - Toggle is favored over add/remove
             currentBox.classList.toggle("gridBox");
-
+            
             // Appending to parent (canvas)
             canvas.appendChild(currentBox);
         }
     }
+    
+    let elementsArray = document.querySelectorAll(".gridBox");
+
+    elementsArray.forEach(function(element)
+    {
+        element.addEventListener("mouseenter", function()
+        {
+            console.log("Event listener fired.");
+            element.style.backgroundColor = "rgb(" + 
+                (Math.random() * 255) + ", " + 
+                (Math.random() * 255) + ", " + 
+                (Math.random() * 255) + ")";
+        });     
+    });
 }
