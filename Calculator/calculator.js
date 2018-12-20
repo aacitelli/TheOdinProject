@@ -115,6 +115,7 @@ clearButton.addEventListener("click", function()
     inputField.textContent = inputExpression;
 });
 
+
 // Takes in a string expression and either calculates it or throws an error 
 function calculate(expression)
 {
@@ -123,8 +124,15 @@ function calculate(expression)
 
 function infixToPostfix(input)
 {
-    let output = "";
+    let output = "adsfsd";
 
     return output;
 }
+
+// Testing infix -> postfix
+var input = document.getElementById("inputString");
+input.textContent = "3 * 5 + 4 - 3 * 6 + 9";
+
+var output = document.getElementById("outputString");
+output.textContent = infixToPostfix(input.textContent);
 

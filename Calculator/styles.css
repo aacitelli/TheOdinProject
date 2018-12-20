@@ -11,6 +11,9 @@
     width: 402px;
     height: 100px;
 
+    min-width: 402px;
+    min-height: 100px;
+
     padding: 25px;
     float: left;
 
@@ -32,6 +35,9 @@
 {
     width: 100px;
     height: 100px;
+
+    min-width: 100px;
+    min-height: 100px;    
 
     float: left;
 }
