@@ -8,4 +8,5 @@ Source code can be found in the repo's subfolders.
 - Google Homepage Replication
 - Google Search Results Page Replication 
 - Basic Rock, Paper, Scissors
+- Etch A Sketch 
 
