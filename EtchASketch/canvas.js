@@ -29,6 +29,7 @@ function initializeGrid()
 
             // Assigning a class - Toggle is favored over add/remove
             currentBox.classList.toggle("gridBox");
+            currentBox.style.backgroundColor = "white";
             
             // Appending to parent (canvas)
             canvas.appendChild(currentBox);
@@ -49,3 +50,16 @@ function initializeGrid()
         });     
     });
 }
+
+/* Adding reset functionality */
+var resetButton = document.getElementById("resetButton");
+resetButton.addEventListener("click", function()
+{
+    // Basically just a modification of the above code 
+    let elementsArray = document.querySelectorAll(".gridBox");
+
+    elementsArray.forEach(function(element)
+    {
+        element.style.backgroundColor = "white";    
+    });
+});

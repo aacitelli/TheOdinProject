@@ -53,3 +53,9 @@ body
 {
     color: white;
 }
+
+#resetButton
+{
+    padding: 10px;
+    margin-top: 10px;
+}
