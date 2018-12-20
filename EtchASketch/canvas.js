@@ -41,12 +41,12 @@ function initializeGrid()
     elementsArray.forEach(function(element)
     {
         element.addEventListener("mouseenter", function()
-        {
-            console.log("Event listener fired.");
+        {          
+            // Constructing a new string basically, JS be crazy 
             element.style.backgroundColor = "rgb(" + 
                 (Math.random() * 255) + ", " + 
                 (Math.random() * 255) + ", " + 
-                (Math.random() * 255) + ")";
+                (Math.random() * 255) + ")";                       
         });     
     });
 }
