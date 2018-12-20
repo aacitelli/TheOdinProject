@@ -6,13 +6,15 @@
     box-sizing: border-box;
 }
 
-input 
+#inputField
 {
     width: 402px;
     height: 100px;
 
     padding: 25px;
     float: left;
+
+    border: 1px black solid;
 }
 
 #calculatorContainer

@@ -11,21 +11,17 @@
 
   </head>
 
-  <body>
+  <body>    
 
     <!-- Testing -->
     <span>Infix Input: </span><span id="inputString"></div>
     <span>Postfix Output: </span><span id="Output String"></div>
-    
+
     <!-- Container for the entire thing -->
     <div id="calculatorContainer">
 
       <!-- Input Field - 4 Wide -->
-      <form>
-
-        <input id="inputField" type="text" placeholder="Input expression here...">
-
-      </form>
+      <div id="inputField"></div>
 
       <!-- Row 1 -->
       <!-- 1 -->
@@ -80,6 +76,9 @@
       <button id="/Button" class="calculatorButton">/</button>    
 
     </div>
+
+    <!-- Comes at the end so the JS can reference actual elements -->
+    <script src="calculator.js"></script>
     
   </body>
 

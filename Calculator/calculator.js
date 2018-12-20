@@ -1,16 +1,6 @@
+/* All this stuff gets executed on page load */
 var inputField = document.getElementById("inputField");
 var inputExpression = "";
-
-// Takes in a string expression and either calculates it or throws an error 
-function calculate(expression)
-{
-
-}
-
-function infixToPostfix(expression)
-{
-
-}
 
 // Getting all the elements 
 var zeroButton = document.getElementById("0Button");
@@ -33,82 +23,108 @@ var clearButton = document.getElementById("clearButton");
 /* All the event listeners... here we go */
 zeroButton.addEventListener("click", function()
 {
-    inputExpression += "0";
-    inputField.value = inputExpression;
+    console.log("Event listener for zero fired.");
+    inputExpression = inputExpression + "0";
+    inputField.textContent = inputExpression;
 });
 
 oneButton.addEventListener("click", function()
 {
     inputExpression += "1";
-    inputField.value = inputExpression;
+    inputField.textContent = inputExpression;
 });
 
 twoButton.addEventListener("click", function()
 {
     inputExpression += "2";
-    inputField.value = inputExpression;
+    inputField.textContent = inputExpression;
 });
 
 threeButton.addEventListener("click", function()
 {
     inputExpression += "3";
+    inputField.textContent = inputExpression;
 });
 
 fourButton.addEventListener("click", function()
 {
     inputExpression += "4";
+    inputField.textContent = inputExpression;
 });
 
 fiveButton.addEventListener("click", function()
 {
     inputExpression += "5";
+    inputField.textContent = inputExpression;
 });
 
 sixButton.addEventListener("click", function()
 {
     inputExpression += "6";
+    inputField.textContent = inputExpression;
 });
 
 sevenButton.addEventListener("click", function()
 {
     inputExpression += "7";
+    inputField.textContent = inputExpression;
 });
 
 eightButton.addEventListener("click", function()
 {
     inputExpression += "8";
+    inputField.textContent = inputExpression;
 });
 
 nineButton.addEventListener("click", function()
 {
     inputExpression += "9";
+    inputField.textContent = inputExpression;
 });
 
 // This one legit just calls the calculate function 
-equalsButton.addEventListener("click", calculate(expression));
+equalsButton.addEventListener("click", calculate(inputExpression));
 
 plusButton.addEventListener("click", function()
 {
     inputExpression += "+";
+    inputField.textContent = inputExpression;
 });
 
 minusButton.addEventListener("click", function()
 {
     inputExpression += "-";
+    inputField.textContent = inputExpression;
 });
 
 multiplyButton.addEventListener("click", function()
 {
     inputExpression += "*";
+    inputField.textContent = inputExpression;
 });
 
 divideButton.addEventListener("click", function()
 {
     inputExpression += "/";
+    inputField.textContent = inputExpression;
 });
 
 clearButton.addEventListener("click", function()
 {
     inputExpression = "";
+    inputField.textContent = inputExpression;
 });
+
+// Takes in a string expression and either calculates it or throws an error 
+function calculate(expression)
+{
+
+}
+
+function infixToPostfix(input)
+{
+    let output = "";
+
+    return output;
+}
 
