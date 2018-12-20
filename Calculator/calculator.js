@@ -122,11 +122,89 @@ function calculate(expression)
 
 }
 
+// Uses this algorithm: https://en.wikipedia.org/wiki/Shunting-yard_algorithm
+// Note: Precedence of +- is 
 function infixToPostfix(input)
 {
-    let output = "adsfsd";
+    // Great visualization of how this works: https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Shunting_yard.svg/400px-Shunting_yard.svg.png
+    let output = "";
+    let currentToken;
+    let outputStack = [], operatorStack = [];
+
+    // Note - Don't have to worry about stripping whitespace b/c there's no way for the user to input it
+
+    // Loops through every character in the input string 
+    for (let i = 0; i < input.length; i++)
+    {
+        currentToken = input[i];
+
+        // If it's a number, it enters this loop 
+        if (!isNaN(currentToken))
+        {
+            outputStack = outputStack + currentToken;
+            continue; // Go to the next char in the input sequence
+        }
+
+        // If it's an operator, then it enters this loop 
+        else if (currentToken === "*" || currentToken === "/" || currentToken === "+" || currentToken === "-")
+        {
+            let precedence = getPrecedence(currentToken);
+
+            // This is pretty much taken straight from wikipedia's pseudocode and was a LOT of fun to program
+            while (getPrecedence(operatorStack[operatorStack.length - 1]) >= precedence &&
+                    operatorStack[operatorStack.length - 1] !== "(")
+            {
+                outputStack = outputStack + operatorStack[operatorStack.length - 1];
+                
+                // Removes that operator from the operator stack
+                operatorStack.splice(operatorStack[operatorStack.length - 1], 1);
+                 
+            }
+
+            // Places the current token in the next place 
+            operatorStack[operatorStack.length] = currentToken;
+            continue; // Go to the next char in the input sequence
+        }
+
+        else if (currentToken === "(")
+        {
+            operatorstack[operatorStack.length] = currentToken;
+            continue; // Go to the next char in the input sequence
+        }
+
+        else if (currentToken === ")")
+        {
+            while (operatorStack[operatorStack.length - 1] !== "(")
+            {
+                outputStack = outputStack + operatorStack[operatorStack.length - 1]; 
+                operatorStack.splice(operatorstack[operatorStack.length - 1], 1);
+            }
+
+            outputStack = outputStack + operatorStack[operatorStack.length - 1];
+            operatorStack.splice(operatorStack[operatorStack.length - 1], 1);
+            continue;
+        }    
+    }
+
+    // When there's no more tokens to read from the input, move everything from the operator stack to the output stack 
+    while (operatorStack.length !== 0)
+    {
+        outputStack = outputStack + operatorStack[operatorstack.length - 1];
+        operatorStack.splice(operatorStack[operatorStack.length - 1], 1);
+    }
 
     return output;
+}
+
+// */ = 2, +- = 1
+function getPrecedence(input)
+{
+    if (input === "*" || input === "/")
+    {
+        return 1;
+    }
+
+    return 2;
 }
 
 // Testing infix -> postfix
