@@ -17,8 +17,8 @@ input
 
 #calculatorContainer
 {   
-    width: 400px;
-    height: 5000px;
+    width: 402px;
+    height: 500px;
 
     margin: auto;
     margin-top: 100px;
@@ -33,4 +33,3 @@ input
 
     float: left;
 }
-

@@ -7,6 +7,11 @@ function calculate(expression)
 
 }
 
+function infixToPostfix(expression)
+{
+
+}
+
 // Getting all the elements 
 var zeroButton = document.getElementById("0Button");
 var oneButton = document.getElementById("1Button");
@@ -23,21 +28,25 @@ var plusButton = document.getElementById("+Button");
 var minusButton = document.getElementById("-Button");
 var multiplyButton = document.getElementById("*Button");
 var divideButton = document.getElementById("/Button");
+var clearButton = document.getElementById("clearButton");
 
 /* All the event listeners... here we go */
 zeroButton.addEventListener("click", function()
 {
     inputExpression += "0";
+    inputField.value = inputExpression;
 });
 
 oneButton.addEventListener("click", function()
 {
     inputExpression += "1";
+    inputField.value = inputExpression;
 });
 
 twoButton.addEventListener("click", function()
 {
     inputExpression += "2";
+    inputField.value = inputExpression;
 });
 
 threeButton.addEventListener("click", function()
@@ -96,5 +105,10 @@ multiplyButton.addEventListener("click", function()
 divideButton.addEventListener("click", function()
 {
     inputExpression += "/";
+});
+
+clearButton.addEventListener("click", function()
+{
+    inputExpression = "";
 });
 
