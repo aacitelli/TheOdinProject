@@ -37,12 +37,8 @@ function infixToPostfix(input)
     // Loops through every character in the input string 
     loop1: for (let i = 0; i < input.length; i++)
     {
-        console.log("operatorStack: " + operatorStack.toString());
-        console.log("outputStack: " + outputStack.toString());
-
         // Read a token 
         currentToken = input[i];
-        console.log("BOL Current Token: " + currentToken);
 
         // If token is a number
         if (!isNaN(currentToken))
@@ -81,16 +77,9 @@ function infixToPostfix(input)
         {
             while (operatorStack[operatorStack.length - 1] !== "(" && operatorStack.length > 0)
             {
-                console.log("ClosedParen Current operatorStack: " + operatorStack.toString());
-                console.log("ClosedParen Current outputStack: " + outputStack.toString());
-
                 outputStack.push(operatorStack.pop());
-
-                console.log("Post-Pop ClosedParen operatorStack lastElement: " + operatorStack[operatorStack.length - 1]);
             }
-               
-            console.log("Closed parenthesis while loop exited on token: " + operatorStack[operatorStack.length - 1]);
-
+            
             // Pops the open parenthesis off 
             operatorStack.pop();     
             continue;
@@ -115,7 +104,7 @@ function infixToPostfix(input)
 
         Then, replace() converts every comma to an empty string. The "/,/gi" is replace syntax for a global, case-insensitive replacement
         because otherwise replace() only replaces the first occurrence */
-    return outputStack.toString().replace(/,/gi, " ");
+    return outputStack.toString().replace(/,/gi, ", ");
 }
 
 // Holds a reference to the field where what the user inputs is stored
@@ -240,7 +229,7 @@ clearButton.addEventListener("click", function()
 
 // Testing infix -> postfix
 var input = document.getElementById("inputString");
-input.innerHTML = "3+(4+6)*3+5*(4-3)";
+input.innerHTML = "5-(36*4)-7*(625-43)-6";
 
 var output = document.getElementById("outputString");
 
