@@ -141,6 +141,8 @@ function infixToPostfix(input)
         // If it's a number, it enters this loop 
         if (!isNaN(currentToken))
         {
+            // outputStack is a string so I have to play it safe and not use push()
+            // Todo - Figure out if I can use array methods with JS strings ^ 
             outputStack = outputStack + currentToken;
             continue; // Go to the next char in the input sequence
         }
@@ -154,21 +156,22 @@ function infixToPostfix(input)
             while (getPrecedence(operatorStack[operatorStack.length - 1]) >= precedence &&
                     operatorStack[operatorStack.length - 1] !== "(")
             {
+                /* The below line combines these two and is easier to understand 
                 outputStack = outputStack + operatorStack[operatorStack.length - 1];
+                operatorStack.splice(operatorStack[operatorStack.length - 1], 1); */
                 
-                // Removes that operator from the operator stack
-                operatorStack.splice(operatorStack[operatorStack.length - 1], 1);
-                 
+                // Removes that operator from the operator stack and puts it into the end stack (all in one neat line)
+                outputStack = outputStack + operatorStack.pop();                
             }
 
             // Places the current token in the next place 
-            operatorStack[operatorStack.length] = currentToken;
+            operatorStack.push(currentToken);
             continue; // Go to the next char in the input sequence
         }
 
         else if (currentToken === "(")
         {
-            operatorstack[operatorStack.length] = currentToken;
+            operatorStack.push(currentToken);
             continue; // Go to the next char in the input sequence
         }
 
@@ -176,12 +179,10 @@ function infixToPostfix(input)
         {
             while (operatorStack[operatorStack.length - 1] !== "(")
             {
-                outputStack = outputStack + operatorStack[operatorStack.length - 1]; 
-                operatorStack.splice(operatorstack[operatorStack.length - 1], 1);
+                outputStack = outputStack + operatorStack.pop();
             }
 
-            outputStack = outputStack + operatorStack[operatorStack.length - 1];
-            operatorStack.splice(operatorStack[operatorStack.length - 1], 1);
+            outputStack = outputStack + operatorStack.pop();
             continue;
         }    
     }
@@ -189,8 +190,7 @@ function infixToPostfix(input)
     // When there's no more tokens to read from the input, move everything from the operator stack to the output stack 
     while (operatorStack.length !== 0)
     {
-        outputStack = outputStack + operatorStack[operatorstack.length - 1];
-        operatorStack.splice(operatorStack[operatorStack.length - 1], 1);
+        outputStack = outputStack + operatorStack.pop();
     }
 
     return output;
