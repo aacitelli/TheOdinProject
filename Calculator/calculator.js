@@ -27,29 +27,30 @@ function infixToPostfix(input)
     // Loops through every character in the input string 
     for (let i = 0; i < input.length; i++)
     {
+        // Read a token 
         currentToken = input[i];
 
-        // If it's a number, it enters this loop 
+        // If token is a number
         if (!isNaN(currentToken))
         {
-            // outputStack is a string so I have to play it safe and not use push()
-            // Todo - Figure out if I can use array methods with JS strings ^ 
-            outputStack = outputStack + currentToken;
+            // Push token to output queue 
+            outputStack.push(currentToken); 
             continue; // Go to the next char in the input sequence
         }
 
-        // If it's an operator, then it enters this loop 
+        // If the token is an operator
         if (currentToken === "*" || currentToken === "/" || currentToken === "+" || currentToken === "-")
         {
             let precedence = getPrecedence(currentToken);
 
-            // Takes off all operators from the stack if a multiplication or division is on top
-            if (operatorStack[operatorStack.length - 1] === "*" || operatorStack[operatorStack.length - 1] === "/")
+            /* While there is an operator w/ greater precedence on top OR 
+                the operator at top of stack is left associative and equal precedence
+                Note - All operators built into my calculator are left associative */
+            // Exits loop pretty much only when operator stack is empty due to how I built program 
+            while (getPrecedence(operatorStack[operatorStack.length - 1]) >= precedence && operatorStack.length > 0)
             {
-                while (operatorStack.length > 0)
-                {
-                    outputStack = outputStack + operatorStack.pop();
-                }
+                // Moves from end ("top") of operator stack to end of output stack 
+                outputStack.push(operatorStack.pop());
             }
 
             // Places the current token in the next place 
@@ -65,12 +66,25 @@ function infixToPostfix(input)
 
         else if (currentToken === ")")
         {
+            let flag = false;
             while (operatorStack[operatorStack.length - 1] !== "(")
             {
-                outputStack = outputStack + operatorStack.pop();
+                outputStack.push(operatorStack.pop());
+
+                if (operatorStack.length === 0)
+                {
+                    console.log("Program looked for a closing brace and found none. Breaking loop.");
+                    flag = true;
+                    break;
+                }
             }
 
-            outputStack = outputStack + operatorStack.pop();
+            // Flag is only true if it didn't find a left brace - This is basically error handling
+            if (!flag)
+            {
+                operatorStack.pop();
+            }
+            
             continue;
         }    
 
@@ -86,7 +100,13 @@ function infixToPostfix(input)
         outputStack = outputStack + operatorStack.pop();
     }
 
-    return outputStack;
+    /* This line takes some explanation...
+        The array is first converted to a string, which still has commas in it. I tried using join(""), but that didn't work
+        for some unknown reason. 
+
+        Then, replace() converts every comma to an empty string. The "/,/gi" is replace syntax for a global, case-insensitive replacement
+        because otherwise replace() only replaces the first occurrence */
+    return outputStack.toString().replace(/,/gi, "");
 }
 
 // Holds a reference to the field where what the user inputs is stored
