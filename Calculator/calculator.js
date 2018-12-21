@@ -16,6 +16,11 @@ function getPrecedence(input)
         return 1;
     }
 
+    else if (input === "(")
+    {
+        return 3;
+    }
+
     // Anything else is lower precedence 
     return 2;
 }
@@ -30,10 +35,14 @@ function infixToPostfix(input)
     // Note - Don't have to worry about stripping whitespace b/c there's no way for the user to input it
 
     // Loops through every character in the input string 
-    for (let i = 0; i < input.length; i++)
+    loop1: for (let i = 0; i < input.length; i++)
     {
+        console.log("operatorStack: " + operatorStack.toString());
+        console.log("outputStack: " + outputStack.toString());
+
         // Read a token 
         currentToken = input[i];
+        console.log("BOL Current Token: " + currentToken);
 
         // If token is a number
         if (!isNaN(currentToken))
@@ -51,7 +60,6 @@ function infixToPostfix(input)
             /* While there is an operator w/ greater precedence on top OR 
                 the operator at top of stack is left associative and equal precedence
                 Note - All operators built into my calculator are left associative */
-            // Exits loop pretty much only when operator stack is empty due to how I built program 
             while (getPrecedence(operatorStack[operatorStack.length - 1]) <= precedence && operatorStack.length > 0)
             {
                 // Moves from end ("top") of operator stack to end of output stack 
@@ -71,31 +79,27 @@ function infixToPostfix(input)
 
         else if (currentToken === ")")
         {
-            let flag = false;
-            while (operatorStack[operatorStack.length - 1] !== "(")
+            while (operatorStack[operatorStack.length - 1] !== "(" && operatorStack.length > 0)
             {
+                console.log("ClosedParen Current operatorStack: " + operatorStack.toString());
+                console.log("ClosedParen Current outputStack: " + outputStack.toString());
+
                 outputStack.push(operatorStack.pop());
 
-                if (operatorStack.length === 0)
-                {
-                    console.log("Program looked for a closing brace and found none. Breaking loop.");
-                    flag = true;
-                    break;
-                }
+                console.log("Post-Pop ClosedParen operatorStack lastElement: " + operatorStack[operatorStack.length - 1]);
             }
+               
+            console.log("Closed parenthesis while loop exited on token: " + operatorStack[operatorStack.length - 1]);
 
-            // Flag is only true if it didn't find a left brace - This is basically error handling
-            if (!flag)
-            {
-                operatorStack.pop();
-            }
-            
+            // Pops the open parenthesis off 
+            operatorStack.pop();     
             continue;
         }    
 
         else
         {
             console.log("Current character results in unhandled behavior.");
+            continue;
         }
     }
 
@@ -111,7 +115,7 @@ function infixToPostfix(input)
 
         Then, replace() converts every comma to an empty string. The "/,/gi" is replace syntax for a global, case-insensitive replacement
         because otherwise replace() only replaces the first occurrence */
-    return outputStack.toString().replace(/,/gi, "");
+    return outputStack.toString().replace(/,/gi, " ");
 }
 
 // Holds a reference to the field where what the user inputs is stored
