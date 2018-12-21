@@ -3,7 +3,12 @@ function calculate(input)
 
 }
 
+// Debug 
+console.log("Precedence of + is " + getPrecedence("+"));
+console.log("Precedence of * is " + getPrecedence("*"));
+
 // */ = 2, +- = 1
+// Lower precedence means it gets executed first 
 function getPrecedence(input)
 {
     if (input === "*" || input === "/")
@@ -39,7 +44,7 @@ function infixToPostfix(input)
         }
 
         // If the token is an operator
-        if (currentToken === "*" || currentToken === "/" || currentToken === "+" || currentToken === "-")
+        else if (currentToken === "*" || currentToken === "/" || currentToken === "+" || currentToken === "-")
         {
             let precedence = getPrecedence(currentToken);
 
@@ -47,7 +52,7 @@ function infixToPostfix(input)
                 the operator at top of stack is left associative and equal precedence
                 Note - All operators built into my calculator are left associative */
             // Exits loop pretty much only when operator stack is empty due to how I built program 
-            while (getPrecedence(operatorStack[operatorStack.length - 1]) >= precedence && operatorStack.length > 0)
+            while (getPrecedence(operatorStack[operatorStack.length - 1]) <= precedence && operatorStack.length > 0)
             {
                 // Moves from end ("top") of operator stack to end of output stack 
                 outputStack.push(operatorStack.pop());
@@ -231,7 +236,7 @@ clearButton.addEventListener("click", function()
 
 // Testing infix -> postfix
 var input = document.getElementById("inputString");
-input.innerHTML = "3*5+4-3*6+9";
+input.innerHTML = "3+(4+6)*3+5*(4-3)";
 
 var output = document.getElementById("outputString");
 
