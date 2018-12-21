@@ -1,8 +1,101 @@
-/* All this stuff gets executed on page load */
+function calculate(input)
+{
+
+}
+
+// */ = 2, +- = 1
+function getPrecedence(input)
+{
+    if (input === "*" || input === "/")
+    {
+        return 1;
+    }
+
+    // Anything else is lower precedence 
+    return 2;
+}
+
+// Uses this algorithm: https://en.wikipedia.org/wiki/Shunting-yard_algorithm
+function infixToPostfix(input)
+{
+    // Great visualization of how this works: https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Shunting_yard.svg/400px-Shunting_yard.svg.png
+    let currentToken;
+    let outputStack = [], operatorStack = [];
+
+    // Note - Don't have to worry about stripping whitespace b/c there's no way for the user to input it
+
+    // Loops through every character in the input string 
+    for (let i = 0; i < input.length; i++)
+    {
+        currentToken = input[i];
+
+        // If it's a number, it enters this loop 
+        if (!isNaN(currentToken))
+        {
+            // outputStack is a string so I have to play it safe and not use push()
+            // Todo - Figure out if I can use array methods with JS strings ^ 
+            outputStack = outputStack + currentToken;
+            continue; // Go to the next char in the input sequence
+        }
+
+        // If it's an operator, then it enters this loop 
+        if (currentToken === "*" || currentToken === "/" || currentToken === "+" || currentToken === "-")
+        {
+            let precedence = getPrecedence(currentToken);
+
+            // Takes off all operators from the stack if a multiplication or division is on top
+            if (operatorStack[operatorStack.length - 1] === "*" || operatorStack[operatorStack.length - 1] === "/")
+            {
+                while (operatorStack.length > 0)
+                {
+                    outputStack = outputStack + operatorStack.pop();
+                }
+            }
+
+            // Places the current token in the next place 
+            operatorStack.push(currentToken);
+            continue; // Go to the next char in the input sequence
+        }
+
+        else if (currentToken === "(")
+        {
+            operatorStack.push(currentToken);
+            continue; // Go to the next char in the input sequence
+        }
+
+        else if (currentToken === ")")
+        {
+            while (operatorStack[operatorStack.length - 1] !== "(")
+            {
+                outputStack = outputStack + operatorStack.pop();
+            }
+
+            outputStack = outputStack + operatorStack.pop();
+            continue;
+        }    
+
+        else
+        {
+            console.log("Current character results in unhandled behavior.");
+        }
+    }
+
+    // When there's no more tokens to read from the input, move everything from the operator stack to the output stack 
+    while (operatorStack.length > 0)
+    {
+        outputStack = outputStack + operatorStack.pop();
+    }
+
+    return outputStack;
+}
+
+// Holds a reference to the field where what the user inputs is stored
 var inputField = document.getElementById("inputField");
+
+// This keeps track of what's in the inputField basically and is used for JS stuff 
 var inputExpression = "";
 
-// Getting all the elements 
+// Getting references to all the buttons so event listeners can be assigned 
 var zeroButton = document.getElementById("0Button");
 var oneButton = document.getElementById("1Button");
 var twoButton = document.getElementById("2Button");
@@ -21,9 +114,9 @@ var divideButton = document.getElementById("/Button");
 var clearButton = document.getElementById("clearButton");
 
 /* All the event listeners... here we go */
+// These all basically add their value to the expression then refresh the value of inputField 
 zeroButton.addEventListener("click", function()
 {
-    console.log("Event listener for zero fired.");
     inputExpression = inputExpression + "0";
     inputField.textContent = inputExpression;
 });
@@ -111,106 +204,24 @@ divideButton.addEventListener("click", function()
 
 clearButton.addEventListener("click", function()
 {
+    // Sets input field to be an empty string 
     inputExpression = "";
     inputField.textContent = inputExpression;
 });
 
-
-// Takes in a string expression and either calculates it or throws an error 
-function calculate(expression)
-{
-
-}
-
-// Uses this algorithm: https://en.wikipedia.org/wiki/Shunting-yard_algorithm
-// Note: Precedence of +- is 
-function infixToPostfix(input)
-{
-    // Great visualization of how this works: https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Shunting_yard.svg/400px-Shunting_yard.svg.png
-    let output = "";
-    let currentToken;
-    let outputStack = [], operatorStack = [];
-
-    // Note - Don't have to worry about stripping whitespace b/c there's no way for the user to input it
-
-    // Loops through every character in the input string 
-    for (let i = 0; i < input.length; i++)
-    {
-        currentToken = input[i];
-
-        // If it's a number, it enters this loop 
-        if (!isNaN(currentToken))
-        {
-            // outputStack is a string so I have to play it safe and not use push()
-            // Todo - Figure out if I can use array methods with JS strings ^ 
-            outputStack = outputStack + currentToken;
-            continue; // Go to the next char in the input sequence
-        }
-
-        // If it's an operator, then it enters this loop 
-        else if (currentToken === "*" || currentToken === "/" || currentToken === "+" || currentToken === "-")
-        {
-            let precedence = getPrecedence(currentToken);
-
-            // This is pretty much taken straight from wikipedia's pseudocode and was a LOT of fun to program
-            while (getPrecedence(operatorStack[operatorStack.length - 1]) >= precedence &&
-                    operatorStack[operatorStack.length - 1] !== "(")
-            {
-                /* The below line combines these two and is easier to understand 
-                outputStack = outputStack + operatorStack[operatorStack.length - 1];
-                operatorStack.splice(operatorStack[operatorStack.length - 1], 1); */
-                
-                // Removes that operator from the operator stack and puts it into the end stack (all in one neat line)
-                outputStack = outputStack + operatorStack.pop();                
-            }
-
-            // Places the current token in the next place 
-            operatorStack.push(currentToken);
-            continue; // Go to the next char in the input sequence
-        }
-
-        else if (currentToken === "(")
-        {
-            operatorStack.push(currentToken);
-            continue; // Go to the next char in the input sequence
-        }
-
-        else if (currentToken === ")")
-        {
-            while (operatorStack[operatorStack.length - 1] !== "(")
-            {
-                outputStack = outputStack + operatorStack.pop();
-            }
-
-            outputStack = outputStack + operatorStack.pop();
-            continue;
-        }    
-    }
-
-    // When there's no more tokens to read from the input, move everything from the operator stack to the output stack 
-    while (operatorStack.length !== 0)
-    {
-        outputStack = outputStack + operatorStack.pop();
-    }
-
-    return output;
-}
-
-// */ = 2, +- = 1
-function getPrecedence(input)
-{
-    if (input === "*" || input === "/")
-    {
-        return 1;
-    }
-
-    return 2;
-}
-
 // Testing infix -> postfix
 var input = document.getElementById("inputString");
-input.textContent = "3 * 5 + 4 - 3 * 6 + 9";
+input.innerHTML = "3*5+4-3*6+9";
 
 var output = document.getElementById("outputString");
-output.textContent = infixToPostfix(input.textContent);
+
+document.addEventListener("DOMContentLoaded", function()
+{
+    output.innerHTML = infixToPostfix(input.textContent);
+});
+
+
+
+
+
 
