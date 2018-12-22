@@ -90,7 +90,7 @@ nineButton.addEventListener("click", function()
 // Function removed b/c it's not doing anything atm 
 equalsButton.addEventListener("click", function()
 {
-    console.log(infixToPostfix(inputArr));
+    inputField.textContent = infixToPostfix(inputArr);
 }); 
 
 plusButton.addEventListener("click", function()
@@ -138,16 +138,15 @@ rightParenButton.addEventListener("click", function()
 
 /* Functions */
 
-// This is only one line but it's one that's relatively confusing and I ended up changing it a lot 
+// Draws the input array onto user output
 function updateInputField()
 {
     // Outputs the array, replaces all occurrences of commas with an empty string
     inputField.textContent = inputArr.join("");
-    console.log("Current array: " + inputArr.toString());
 }
 
-// */ = 2, +- = 1
-// Lower precedence means it gets executed first 
+// Assigns a precedence to each operator 
+// Needed for infixToPostFix Shunting-Yard implementation 
 function getPrecedence(input)
 {
     if (input === "*" || input === "/")
@@ -164,6 +163,7 @@ function getPrecedence(input)
     return 2;
 }
 
+// Converts the original array, which kept multi-digit numbers across several array spots, into one with the numbers in a single array spot 
 function condenseArr(inputArr)
 {
     let currIndex = 0;
@@ -191,20 +191,11 @@ function condenseArr(inputArr)
     return inputArr;
 }
 
-/*
-     Todo - Make this support digits > 9 (it currently treats everything as a string and there's no way to distinguish multidigit numbers at the end)
-
-     Solutions - 
-
-        Convert strings of numbers to straight up numbers whenever they're added to the output array 
-
-*/
 // Uses this algorithm: https://en.wikipedia.org/wiki/Shunting-yard_algorithm
 function infixToPostfix(inputArr)
 {
     // Condenses the array so that consequent numbers are compiled into one number 
-    inputArr = condenseArr(inputArr);
-    console.log("Condensed Array: " + inputArr);
+    inputArr = condenseArr(inputArr); 
 
     // Great visualization of how this works: https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Shunting_yard.svg/400px-Shunting_yard.svg.png
     let currentToken;
@@ -275,8 +266,6 @@ function infixToPostfix(inputArr)
     {
         outputStack.push(operatorStack.pop());
     }
-
-    console.log("outputStack: " + outputStack);
 
     return outputStack;
 }
