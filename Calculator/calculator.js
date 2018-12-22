@@ -187,6 +187,8 @@ function condenseArr(inputArr)
 
         currIndex++;
     }
+
+    return inputArr;
 }
 
 /*
