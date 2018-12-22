@@ -40,4 +40,40 @@
     min-height: 100px;    
 
     float: left;
+    
+    color: white;
+    font-size: 24px;
+    border: 1px black solid;
+}
+
+.wideButton
+{
+    width: 200px;
+    height: 100px;
+
+    min-width: 200px;
+    min-height: 1px;
+
+    float: left;
+
+    color: white;
+    font-size: 24px;
+
+    border: 1px black solid;
+}
+
+/* Literally just coloring and stuff so the webpage doesn't look (as) bad */
+.numberButton 
+{
+    background-color: rgb(45, 152, 218);
+}
+
+.operatorButton
+{
+    background-color: rgb(220, 40, 40);
+}
+
+.miscButton
+{
+    background-color: rgb(25, 110, 210);
 }
