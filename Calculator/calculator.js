@@ -85,14 +85,6 @@ nineButton.addEventListener("click", function()
     updateInputField();
 });
 
-// This one legit just calls the calculate function 
-// Todo - Make sure this works w/ the array shift 
-// Function removed b/c it's not doing anything atm 
-equalsButton.addEventListener("click", function()
-{
-    inputField.textContent = postfixToNumber(infixToPostfix(inputArr));
-}); 
-
 plusButton.addEventListener("click", function()
 {
     inputArr.push('+');
@@ -135,6 +127,15 @@ rightParenButton.addEventListener("click", function()
     inputArr.push(")");
     updateInputField();
 });
+
+// This one legit just calls the calculate function 
+// Todo - Make sure this works w/ the array shift 
+// Function removed b/c it's not doing anything atm 
+equalsButton.addEventListener("click", function()
+{
+    inputField.textContent = postfixToNumber(infixToPostfix(inputArr));
+    inputArr = [parseInt(inputField.textContent)];
+}); 
 
 /* Functions */
 
@@ -326,10 +327,6 @@ function postfixToNumber(inputArr)
             }
         }
     }
-
-    // This is necessary b/c if the user tries any more calculations it would previously 
-    // use the original stack and miss all sorts of orders of operations stuff
-    inputArr = [stack[0]];
 
     // By this point stack has been reduced to a single number - The answer
     return stack[0];
