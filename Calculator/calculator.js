@@ -1,11 +1,131 @@
-function calculate(input)
+// Used only for output (NOT to read in a value)
+var inputField = document.getElementById("inputField");
+
+// Used for input
+var inputArr = [];
+
+/* Getting references for the Event Listeners */
+var zeroButton = document.getElementById("0Button");
+var oneButton = document.getElementById("1Button");
+var twoButton = document.getElementById("2Button");
+var threeButton = document.getElementById("3Button");
+var fourButton = document.getElementById("4Button");
+var fiveButton = document.getElementById("5Button");
+var sixButton = document.getElementById("6Button");
+var sevenButton = document.getElementById("7Button");
+var eightButton = document.getElementById("8Button");
+var nineButton = document.getElementById("9Button");
+var equalsButton = document.getElementById("=Button");
+var plusButton = document.getElementById("+Button");
+var minusButton = document.getElementById("-Button");
+var multiplyButton = document.getElementById("*Button");
+var divideButton = document.getElementById("/Button");
+var clearButton = document.getElementById("clearButton");
+
+/* Event Listeners */
+zeroButton.addEventListener("click", function()
 {
+    inputArr.push(0);
+    updateInputField();
+});
 
+oneButton.addEventListener("click", function()
+{
+    inputArr.push(1);
+    updateInputField();
+});
+
+twoButton.addEventListener("click", function()
+{
+    inputArr.push(2);
+    updateInputField();
+});
+
+threeButton.addEventListener("click", function()
+{
+    inputArr.push(3);
+    updateInputField();
+});
+
+fourButton.addEventListener("click", function()
+{
+    inputArr.push(4);
+    updateInputField();
+});
+
+fiveButton.addEventListener("click", function()
+{
+    inputArr.push(5);
+    updateInputField();
+});
+
+sixButton.addEventListener("click", function()
+{
+    inputArr.push(6);
+    updateInputField();
+});
+
+sevenButton.addEventListener("click", function()
+{
+    inputArr.push(7);
+    updateInputField();
+});
+
+eightButton.addEventListener("click", function()
+{
+    inputArr.push(8);
+    updateInputField();
+});
+
+nineButton.addEventListener("click", function()
+{
+    inputArr.push(9);
+    updateInputField();
+});
+
+// This one legit just calls the calculate function 
+// Todo - Make sure this works w/ the array shift 
+equalsButton.addEventListener("click", calculate(inputArr));
+
+plusButton.addEventListener("click", function()
+{
+    inputArr.push("+");
+    updateInputField();
+});
+
+minusButton.addEventListener("click", function()
+{
+    inputArr.push("-");
+    updateInputField();
+});
+
+multiplyButton.addEventListener("click", function()
+{
+    inputArr.push("*");
+    updateInputField();
+});
+
+divideButton.addEventListener("click", function()
+{
+    inputArr.push("/");
+    updateInputField();
+});
+
+clearButton.addEventListener("click", function()
+{
+    // Sets input field to be an empty string 
+    inputArr.length = 0;
+    updateInputField();
+});
+
+/* Functions */
+
+// This is only one line but it's one that's relatively confusing so I made a method out of it 
+function updateInputField()
+{
+    // Outputs the array, replaces all occurrences of commas with an empty string
+    inputField.textContent = inputArr.join("");
 }
-
-// Debug 
-console.log("Precedence of + is " + getPrecedence("+"));
-console.log("Precedence of * is " + getPrecedence("*"));
 
 // */ = 2, +- = 1
 // Lower precedence means it gets executed first 
@@ -25,9 +145,46 @@ function getPrecedence(input)
     return 2;
 }
 
-// Uses this algorithm: https://en.wikipedia.org/wiki/Shunting-yard_algorithm
-function infixToPostfix(input)
+function condenseArr(inputArr)
 {
+    let currIndex = 0;
+
+    // Only need to go until the second to last element b/c the last element has nothing after it and therefore can't be simplified 
+    while (currIndex < inputArr.length)
+    {
+        // If the current index is a number, combines it with every number thereafter until it hits an operator 
+        if (!isNaN(inputArr[currIndex]))
+        {
+            while (!isNaN(inputArr[currIndex + 1]))
+            {
+                // Adds the next element onto the current element (adds them as strings then parses as an integer)
+                inputArr[currIndex] = parseInt(inputArr[currIndex].toString() + inputArr[currIndex + 1].toString());
+                
+                // Splice modifies the intial array
+                // This removes whatever's right after currIndex
+                inputArr.splice(currIndex + 1, 1);
+            }
+        }
+
+        currIndex++;
+    }
+}
+
+/*
+     Todo - Make this support digits > 9 (it currently treats everything as a string and there's no way to distinguish multidigit numbers at the end)
+
+     Solutions - 
+
+        Convert strings of numbers to straight up numbers whenever they're added to the output array 
+
+*/
+// Uses this algorithm: https://en.wikipedia.org/wiki/Shunting-yard_algorithm
+function infixToPostfix(inputArr)
+{
+    // Condenses the array so that consequent numbers are compiled into one number 
+    inputArr = condenseArr(inputArr);
+    console.log("Condensed Array: " + inputArr);
+
     // Great visualization of how this works: https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Shunting_yard.svg/400px-Shunting_yard.svg.png
     let currentToken;
     let outputStack = [], operatorStack = [];
@@ -35,16 +192,16 @@ function infixToPostfix(input)
     // Note - Don't have to worry about stripping whitespace b/c there's no way for the user to input it
 
     // Loops through every character in the input string 
-    loop1: for (let i = 0; i < input.length; i++)
+    for (let i = 0; i < input.length; i++)
     {
         // Read a token 
-        currentToken = input[i];
+        currentToken = inputArr[i];
 
         // If token is a number
         if (!isNaN(currentToken))
         {
             // Push token to output queue 
-            outputStack.push(currentToken); 
+            outputStack.push(parseInt(currentToken));  // Base 10 by default 
             continue; // Go to the next char in the input sequence
         }
 
@@ -95,149 +252,13 @@ function infixToPostfix(input)
     // When there's no more tokens to read from the input, move everything from the operator stack to the output stack 
     while (operatorStack.length > 0)
     {
-        outputStack = outputStack + operatorStack.pop();
+        outputStack.push(operatorStack.pop());
     }
 
-    /* This line takes some explanation...
-        The array is first converted to a string, which still has commas in it. I tried using join(""), but that didn't work
-        for some unknown reason. 
+    console.log("outputStack: " + outputStack);
 
-        Then, replace() converts every comma to an empty string. The "/,/gi" is replace syntax for a global, case-insensitive replacement
-        because otherwise replace() only replaces the first occurrence */
-    return outputStack.toString().replace(/,/gi, ", ");
+    return outputStack;
 }
-
-// Holds a reference to the field where what the user inputs is stored
-var inputField = document.getElementById("inputField");
-
-// This keeps track of what's in the inputField basically and is used for JS stuff 
-var inputExpression = "";
-
-// Getting references to all the buttons so event listeners can be assigned 
-var zeroButton = document.getElementById("0Button");
-var oneButton = document.getElementById("1Button");
-var twoButton = document.getElementById("2Button");
-var threeButton = document.getElementById("3Button");
-var fourButton = document.getElementById("4Button");
-var fiveButton = document.getElementById("5Button");
-var sixButton = document.getElementById("6Button");
-var sevenButton = document.getElementById("7Button");
-var eightButton = document.getElementById("8Button");
-var nineButton = document.getElementById("9Button");
-var equalsButton = document.getElementById("=Button");
-var plusButton = document.getElementById("+Button");
-var minusButton = document.getElementById("-Button");
-var multiplyButton = document.getElementById("*Button");
-var divideButton = document.getElementById("/Button");
-var clearButton = document.getElementById("clearButton");
-
-/* All the event listeners... here we go */
-// These all basically add their value to the expression then refresh the value of inputField 
-zeroButton.addEventListener("click", function()
-{
-    inputExpression = inputExpression + "0";
-    inputField.textContent = inputExpression;
-});
-
-oneButton.addEventListener("click", function()
-{
-    inputExpression += "1";
-    inputField.textContent = inputExpression;
-});
-
-twoButton.addEventListener("click", function()
-{
-    inputExpression += "2";
-    inputField.textContent = inputExpression;
-});
-
-threeButton.addEventListener("click", function()
-{
-    inputExpression += "3";
-    inputField.textContent = inputExpression;
-});
-
-fourButton.addEventListener("click", function()
-{
-    inputExpression += "4";
-    inputField.textContent = inputExpression;
-});
-
-fiveButton.addEventListener("click", function()
-{
-    inputExpression += "5";
-    inputField.textContent = inputExpression;
-});
-
-sixButton.addEventListener("click", function()
-{
-    inputExpression += "6";
-    inputField.textContent = inputExpression;
-});
-
-sevenButton.addEventListener("click", function()
-{
-    inputExpression += "7";
-    inputField.textContent = inputExpression;
-});
-
-eightButton.addEventListener("click", function()
-{
-    inputExpression += "8";
-    inputField.textContent = inputExpression;
-});
-
-nineButton.addEventListener("click", function()
-{
-    inputExpression += "9";
-    inputField.textContent = inputExpression;
-});
-
-// This one legit just calls the calculate function 
-equalsButton.addEventListener("click", calculate(inputExpression));
-
-plusButton.addEventListener("click", function()
-{
-    inputExpression += "+";
-    inputField.textContent = inputExpression;
-});
-
-minusButton.addEventListener("click", function()
-{
-    inputExpression += "-";
-    inputField.textContent = inputExpression;
-});
-
-multiplyButton.addEventListener("click", function()
-{
-    inputExpression += "*";
-    inputField.textContent = inputExpression;
-});
-
-divideButton.addEventListener("click", function()
-{
-    inputExpression += "/";
-    inputField.textContent = inputExpression;
-});
-
-clearButton.addEventListener("click", function()
-{
-    // Sets input field to be an empty string 
-    inputExpression = "";
-    inputField.textContent = inputExpression;
-});
-
-// Testing infix -> postfix
-var input = document.getElementById("inputString");
-input.innerHTML = "5-(36*4)-7*(625-43)-6";
-
-var output = document.getElementById("outputString");
-
-document.addEventListener("DOMContentLoaded", function()
-{
-    output.innerHTML = infixToPostfix(input.textContent);
-});
-
 
 
 
