@@ -90,7 +90,7 @@ nineButton.addEventListener("click", function()
 // Function removed b/c it's not doing anything atm 
 equalsButton.addEventListener("click", function()
 {
-    inputField.textContent = infixToPostfix(inputArr);
+    inputField.textContent = postfixToNumber(infixToPostfix(inputArr));
 }); 
 
 plusButton.addEventListener("click", function()
@@ -268,6 +268,67 @@ function infixToPostfix(inputArr)
     }
 
     return outputStack;
+}
+
+// Simplifies postfix notation (each operand/number being a spot in the array) to an actual number
+// This is massively easier than infix -> postfix
+// Refer to http://www.oxfordmathcenter.com/drupal7/node/620 for the one I used
+function postfixToNumber(inputArr)
+{
+    let stack = [], currToken;
+    
+    for (let i = 0; i < inputArr.length; i++)
+    {
+        currToken = inputArr[i];
+
+        // Have to use an if here b/c there's an infinite number of possible inputs
+        if (!isNaN(currToken))
+        {
+            stack.push(inputArr[i]);
+        }
+
+        else 
+        {
+            switch (currToken)
+            {
+                case "+":
+                {
+                    // Adds the last two elements then pops the last one off b/c it's accounted for 
+                    stack[stack.length - 2] = stack[stack.length - 2] + stack.pop();
+                    break;
+                }
+
+                case "-":
+                {
+                    // Subtracts the second from the first and pops the last one off for reasons discussed above
+                    stack[stack.length - 2] = stack[stack.length - 2] - stack.pop();
+                    break;
+                }
+
+                case "*":
+                {
+                    // Similar to above
+                    stack[stack.length - 2] = stack[stack.length - 2] * stack.pop();
+                    break;
+                }
+                
+                case "/":
+                {
+                    stack[stack.length - 2] = stack[stack.length - 2] / stack.pop();
+                    break;
+                }
+
+                default: 
+                {
+                    console.log("Input not recognized.");
+                    break;
+                }
+            }
+        }
+    }
+
+    // By this point stack has been reduced to a single number - The answer
+    return stack[0];
 }
 
 
