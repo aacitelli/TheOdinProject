@@ -128,9 +128,7 @@ rightParenButton.addEventListener("click", function()
     updateInputField();
 });
 
-// This one legit just calls the calculate function 
-// Todo - Make sure this works w/ the array shift 
-// Function removed b/c it's not doing anything atm 
+// Runs through infix -> postfix then postfix -> number then resets inputArr to be just the answer 
 equalsButton.addEventListener("click", function()
 {
     inputField.textContent = postfixToNumber(infixToPostfix(inputArr));
@@ -148,6 +146,7 @@ function updateInputField()
 
 // Assigns a precedence to each operator 
 // Needed for infixToPostFix Shunting-Yard implementation 
+// Todo - Standardize this so it's a little less unintuitive (although it works fine w/ my implementation)
 function getPrecedence(input)
 {
     if (input === "*" || input === "/")
