@@ -21,6 +21,8 @@ var minusButton = document.getElementById("-Button");
 var multiplyButton = document.getElementById("*Button");
 var divideButton = document.getElementById("/Button");
 var clearButton = document.getElementById("clearButton");
+var leftParenButton = document.getElementById("(Button");
+var rightParenButton = document.getElementById(")Button");
 
 /* Event Listeners */
 zeroButton.addEventListener("click", function()
@@ -85,11 +87,15 @@ nineButton.addEventListener("click", function()
 
 // This one legit just calls the calculate function 
 // Todo - Make sure this works w/ the array shift 
-equalsButton.addEventListener("click", calculate(inputArr));
+// Function removed b/c it's not doing anything atm 
+equalsButton.addEventListener("click", function()
+{
+    console.log(infixToPostfix(inputArr));
+}); 
 
 plusButton.addEventListener("click", function()
 {
-    inputArr.push("+");
+    inputArr.push('+');
     updateInputField();
 });
 
@@ -114,17 +120,30 @@ divideButton.addEventListener("click", function()
 clearButton.addEventListener("click", function()
 {
     // Sets input field to be an empty string 
-    inputArr.length = 0;
+    inputArr = [];
+    updateInputField();
+});
+
+leftParenButton.addEventListener("click", function()
+{
+    inputArr.push("(");
+    updateInputField();
+});
+
+rightParenButton.addEventListener("click", function()
+{
+    inputArr.push(")");
     updateInputField();
 });
 
 /* Functions */
 
-// This is only one line but it's one that's relatively confusing so I made a method out of it 
+// This is only one line but it's one that's relatively confusing and I ended up changing it a lot 
 function updateInputField()
 {
     // Outputs the array, replaces all occurrences of commas with an empty string
     inputField.textContent = inputArr.join("");
+    console.log("Current array: " + inputArr.toString());
 }
 
 // */ = 2, +- = 1
@@ -192,7 +211,7 @@ function infixToPostfix(inputArr)
     // Note - Don't have to worry about stripping whitespace b/c there's no way for the user to input it
 
     // Loops through every character in the input string 
-    for (let i = 0; i < input.length; i++)
+    for (let i = 0; i < inputArr.length; i++)
     {
         // Read a token 
         currentToken = inputArr[i];
