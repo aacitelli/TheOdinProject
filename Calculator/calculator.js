@@ -327,6 +327,10 @@ function postfixToNumber(inputArr)
         }
     }
 
+    // This is necessary b/c if the user tries any more calculations it would previously 
+    // use the original stack and miss all sorts of orders of operations stuff
+    inputArr = [stack[0]];
+
     // By this point stack has been reduced to a single number - The answer
     return stack[0];
 }
